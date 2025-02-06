@@ -11,11 +11,11 @@ describe("Authentication Tests", () => {
     role: "admin",
   };
 
-  const salesUser = {
+  const employeeUser = {
     name: "Sales Test",
     email: "sales@test.com",
     password: "password123",
-    role: "sales",
+    role: "employee",
   };
 
   // Clean up before each test
@@ -23,7 +23,7 @@ describe("Authentication Tests", () => {
     try {
       // Remove any existing test users
       await User.deleteMany({
-        email: { $in: [adminUser.email, salesUser.email] },
+        email: { $in: [adminUser.email, employeeUser.email] },
       });
     } catch (error) {
       console.error("Pre-test cleanup error:", error);
@@ -35,7 +35,7 @@ describe("Authentication Tests", () => {
     try {
       // Remove test users
       await User.deleteMany({
-        email: { $in: [adminUser.email, salesUser.email] },
+        email: { $in: [adminUser.email, employeeUser.email] },
       });
     } catch (error) {
       console.error("Post-test cleanup error:", error);
@@ -54,7 +54,9 @@ describe("Authentication Tests", () => {
     });
 
     it("should register sales user successfully", async () => {
-      const res = await request(app).post("/api/user/register").send(salesUser);
+      const res = await request(app)
+        .post("/api/user/register")
+        .send(employeeUser);
 
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty(

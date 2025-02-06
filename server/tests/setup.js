@@ -10,15 +10,6 @@ beforeAll(async () => {
   await mongoose.connect(uri);
 });
 
-// Clear all data between tests
-afterEach(async () => {
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    const collection = collections[key];
-    await collection.deleteMany();
-  }
-});
-
 // Close database connection after all tests
 afterAll(async () => {
   await mongoose.connection.close();
