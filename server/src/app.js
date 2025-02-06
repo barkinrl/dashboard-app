@@ -7,7 +7,8 @@ import customerRoutes from "./routes/customerRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
 import cookieParser from "cookie-parser";
 import { authenticate } from "./middleware/authMiddleware.js";
-//import { errorHandler } from "./middleware/errorMiddleware.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "../swaggerConfig.js";
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/customers", authenticate, customerRoutes);
 app.use("/api/sales", authenticate, salesRoutes);
 
-// Error handler
-//app.use(errorHandler);
+// Useage of Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default app;
