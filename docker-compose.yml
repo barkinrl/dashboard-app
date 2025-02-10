@@ -1,0 +1,65 @@
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=mongodb://root:example@mongodb:27017/userDB?authSource=admin
+    networks:
+      - app-network
+    depends_on:
+      - mongodb
+
+  customer-service:
+    build: ./customer-service
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGODB_URI=mongodb://root:example@mongodb:27017/customerDB?authSource=admin
+    networks:
+      - app-network
+    depends_on:
+      - mongodb
+
+  sales-service:
+    build: ./sales-service
+    ports:
+      - "3003:3003"
+    environment:
+      - MONGODB_URI=mongodb://root:example@mongodb:27017/salesDB?authSource=admin
+    networks:
+      - app-network
+    depends_on:
+      - mongodb
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - JWT_SECRET=your_jwt_secret
+    networks:
+      - app-network
+    depends_on:
+      - user-service
+      - customer-service
+      - sales-service
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
