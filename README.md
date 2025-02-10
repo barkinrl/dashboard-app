@@ -17,7 +17,7 @@ This project is a microservice-based backend system developed according to the r
 1. **Clone the Project:**
 
    ```bash
-   git clone [<repo-link>](https://github.com/barkinrl/dashboard-app/tree/version-1.0.0)
+   git clone https://github.com/barkinrl/dashboard-app/tree/version-1.0.0
    cd <project-folder>
    ```
 
